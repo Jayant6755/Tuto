@@ -267,14 +267,4 @@ Configuration is in [Backend/src/socket/socket.ts](Backend/src/socket/socket.ts)
 3. Push to the branch (`git push origin feature/AmazingFeature`)
 4. Open a Pull Request
 
-## 📝 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 📞 Support
-
-For support, email support@tuto.com or create an issue in the repository.
-
----
-
-**Happy Learning! 📚**

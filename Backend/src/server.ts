@@ -10,6 +10,7 @@ import {Server} from "socket.io";
 
 import setupSocket from "./socket/socket"
 import connectionRouter from "./Routes/connection";
+import adminrouter from "./Routes/admin";
 
 dotenv.config();
 
@@ -59,6 +60,9 @@ app.use("/api/user", ro);
 
 // Routes for connection requests
 app.use("/api/connection", connectionRouter);
+
+//admin
+app.use("/api/admin", adminrouter)
 
 // Start Server
 server.listen(PORT, () => {

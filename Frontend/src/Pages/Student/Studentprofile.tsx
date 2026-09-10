@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../Hero/Navbar";
+import Navbar from "../../Pages/Home/Navbar/Navbar";
 import Footer from "../../Hero/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,7 @@ const StudentProfile = () => {
         if (response.data && response.data.findstudent) {
           const studentProfile = response.data.findstudent;
           setData(studentProfile);
-          setDraft(studentProfile); // 🟢 Syncs draft state with live DB values
+          setDraft(studentProfile); 
         }
         
       } catch (error) {
@@ -76,7 +76,7 @@ const StudentProfile = () => {
     setEditing(false);
   };
 
-  // 🟢 Guard Gate: Holds back UI rendering until your backend request completes
+  
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -100,7 +100,7 @@ const StudentProfile = () => {
     );
   }
 
-  // 🟢 Safe Calculation: Fallback characters ensure index [0] never crashes on empty strings
+  
   const firstInitial = data.name ? data.name[0] : "?";
   
   const initials = `${firstInitial}`;
@@ -109,10 +109,10 @@ const StudentProfile = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <main className="pt-16">
+      <main className="">
         {/* Hero banner */}
-        <div className="h-48 md:h-56 bg-gradient-hero relative">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,transparent_20%,hsl(var(--foreground)/0.25)_100%)]" />
+        <div className="h-48 md:h-56 bg-red-600 relative">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,transparent_20%,hsl(var(--foreground)/0.25)_100%)] " />
         </div>
 
         <div className="container mx-auto px-4 -mt-20 pb-20 relative z-10">
@@ -120,7 +120,7 @@ const StudentProfile = () => {
             {/* Avatar + name header */}
             <div className="flex flex-col sm:flex-row items-center sm:items-end gap-5 mb-8">
               <div className="relative group">
-                <Avatar className="w-32 h-32 border-4 border-card shadow-xl">
+                <Avatar className="w-32 h-32 bg-gray-300 border-1 shadow-xl">
                   <AvatarImage src={data.avatar} alt={data.name} />
                   <AvatarFallback className="text-3xl font-bold bg-primary text-primary-foreground">
                     {initials}
@@ -229,8 +229,8 @@ const StudentProfile = () => {
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-primary flex items-center gap-2">
-                      <User className="w-4 h-4" /> About Me
+                    <h2 className="text-sm text-red-600 font-semibold uppercase tracking-[0.15em] text-primary flex items-center gap-2">
+                      <User className="w-4 h-4 " /> About Me
                     </h2>
                     <p className="text-muted-foreground leading-relaxed text-[15px] whitespace-pre-line">
                       {data.bio || "No description written yet."}
@@ -238,21 +238,21 @@ const StudentProfile = () => {
 
                     <div className="grid sm:grid-cols-2 gap-4 pt-2">
                       <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50">
-                        <Mail className="w-4 h-4 text-primary shrink-0" />
+                        <Mail className="w-4 h-4 text-red-600 shrink-0" />
                         <div>
                           <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Email</p>
                           <p className="text-sm font-medium text-foreground">{data.email}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50">
-                        <Phone className="w-4 h-4 text-primary shrink-0" />
+                        <Phone className="w-4 h-4 text-red-600 shrink-0" />
                         <div>
                           <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Phone</p>
                           <p className="text-sm font-medium text-foreground">{data.phone || "None"}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50">
-                        <MapPin className="w-4 h-4 text-primary shrink-0" />
+                        <MapPin className="w-4 h-4 text-red-600 shrink-0" />
                         <div>
                           <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Location</p>
                           <p className="text-sm font-medium text-foreground">{data.location || "None"}</p>

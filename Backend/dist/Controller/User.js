@@ -47,7 +47,7 @@ const loginUser = async (req, res) => {
         }
         if (!process.env.JWT_KEY)
             throw new Error("No JWT Key in ENV");
-        const token = jsonwebtoken_1.default.sign({ id: user._id, role: user.role }, process.env.JWT_KEY, { expiresIn: "1h" });
+        const token = jsonwebtoken_1.default.sign({ id: user._id, role: user.role }, process.env.JWT_KEY, { expiresIn: "4h" });
         return res.status(200).json({ message: "Login successful", token, id: user._id });
     }
     catch (error) {

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {PrivateNavbar} from "@/Pages/Navbar/Navbar";
+import {PrivateNavbar} from "@/Pages/Home/Navbar/Navbar";
 import {jwtDecode} from "jwt-decode";
 import {
   Users,
@@ -99,10 +99,10 @@ const TeacherDashboard = () => {
  
   const navigate = useNavigate();
 
-  console.log("ActiveChatUser: ",activeChatUser);
+  
   const token = localStorage.getItem("token");
   if(!token) {
-    return <Navigate to="/teacherlogin" />
+    return <Navigate to="/user-login" />
     }
 
  
@@ -191,6 +191,7 @@ const TeacherDashboard = () => {
     }
 
     const LogOut = () => {
+      localStorage.removeItem("token")
       navigate("/");
     };
 

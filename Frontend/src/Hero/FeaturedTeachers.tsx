@@ -70,7 +70,7 @@ const FeaturedTeachers = () => {
               Discover our most highly-rated educators, handpicked for their expertise and teaching excellence.
             </p>
           </div>
-          <Link to="/teachers" className="mt-6 md:mt-0">
+          <Link to="/access" className="mt-6 md:mt-0">
             <Button className="group cursor-pointer bg-red-600 text-white md:text-lg ">
               View All Teachers
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />

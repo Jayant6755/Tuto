@@ -8,6 +8,9 @@ export interface ITeacher extends Document {
     LName: string;
     email: string;
     location:string;
+    degree: string;
+    institution: string;
+    year: string;
     bio: string;
     subjects: string[]; 
     ClassLevels: string[]; 
@@ -25,6 +28,23 @@ export const TeacherSchema: Schema = new Schema({
     LName: { type: String },
     email: { type: String, unique: true },
     location: {type: String},
+    Education: [
+        {
+            degree: {
+                type: String,
+                required: true
+            },
+
+            institution: {
+                type: String
+            },
+            year: {
+                type: String
+            }
+
+        }
+    ],
+    Title: { type: String },
     bio: { type: String },
     subjects: { type: [String] }, 
     ClassLevels: { type: [String] },

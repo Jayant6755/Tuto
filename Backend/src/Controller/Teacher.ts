@@ -11,7 +11,7 @@ import { profile } from 'console';
  export const TeacherInformation = async (req: AuthRequest, res: Response) => {
     
      try {
-         const {id, FName, LName, email, location, bio, subjects, ClassLevels, experience, hourlyRate} = req.body;
+         const {id, FName, LName, email, location, Title, Education, bio, subjects, ClassLevels, experience, hourlyRate} = req.body;
         
 
          const check = await Teacher.findOne({email});
@@ -25,6 +25,8 @@ import { profile } from 'console';
              LName,
              email,
              location,
+             Title,
+             Education,
              bio,
              subjects,
              ClassLevels,

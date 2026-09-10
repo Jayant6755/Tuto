@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema<IUser>(
     name: { type: String, },
     email: { type: String, unique: true },
     password: { type: String },
-    role: { type: String, enum: ["Teacher", "Student"], required: true, default: "Student" },
+    role: { type: String, enum: ["Teacher", "Student"], default: "Student" },
   },
   { timestamps: true }
 );

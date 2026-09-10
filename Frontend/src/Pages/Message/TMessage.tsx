@@ -18,9 +18,10 @@ import {
   Smile,
   Trash2,
 } from "lucide-react";
-import Navbar from "../../Hero/Navbar";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import Navbar from "../../Pages/Home/Navbar/Navbar";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import socket from "@/Socket/Socket";
+
 
 type Student = {
   _id: string;
@@ -41,9 +42,9 @@ interface MessageStructure {
   read?: boolean;
 }
 
-const Messages = () => {
+const TMessages = () => {
   const [message, setMessage] = useState("");
-  // 🟢 Enforce unified structural shape typing for messages
+  const navigate = useNavigate();
   const [convos, setConvos] = useState<MessageStructure[]>([]);
 
    
@@ -211,17 +212,31 @@ const Messages = () => {
     }
   };
 
+  //back button
+  const handleBack = () => {
+    //take the id from url
+    const userId = id;
+    
+    if (userId) {
+      navigate(`/teacher-dashboard/${userId}`);
+    }
+    
+  }
+
   localStorage.setItem("activeUser", JSON.stringify(activeConnections));
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="pt-16 h-screen flex">
+      <div className=" h-screen flex">
         {/* Sidebar — conversation list */}
         <div className={`w-full md:w-[360px] lg:w-[400px] flex flex-col bg-card border-r border-gray-300 ${mobileShowChat ? "hidden md:flex" : "flex"}`}>
           <div className="p-4 border-b border-gray-300">
-            <div className="flex flex-row">
-            <h1 className="text-xl font-bold text-foreground mb-3">Messages</h1>
+            <div className="flex flex-row gap-2">
+           
+              <span className="cursor-pointer" onClick={handleBack}> <ArrowLeft className="pt-1 w-7 h-7 " /> </span>
+           
+            <span><h1 className="text-xl font-bold text-foreground mb-3">Messages</h1></span>
             </div>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -261,7 +276,7 @@ const Messages = () => {
                       <span className="text-xs text-muted-foreground shrink-0 ml-2">{rec?.time || "Just now"}</span>
                     </div>
                     <Badge variant="outline" className="text-[10px] px-1.5 py-0 mb-1 border-gray-300">
-                      {rec?.subject || "No subject"}
+                      {rec?.subject || ""}
                     </Badge>
                   </div>
                 </button>
@@ -304,7 +319,7 @@ const Messages = () => {
                     const isMe = msg.senderId?.toString() === senderID?.toString();
                     return (
                       <div key={msg._id || `&{msg.createdAt}-&{msg.content}`} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
-                        <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 shadow-sm ${isMe ? "bg-gray-200 text-gray-800 rounded-br-md" : "bg-red-500 text-white rounded-bl-md"}`}>
+                        <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 shadow-sm ${isMe ? "bg-red-300 text-gray-800 rounded-br-md" : "bg-white text-black rounded-bl-md"}`}>
                           <div className="flex items-start justify-between gap-2">
                             <p className="text-sm leading-relaxed">{msg.content}</p>
                             {isMe && (
@@ -317,7 +332,7 @@ const Messages = () => {
                               </button>
                             )}
                           </div>
-                          <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] ${isMe ? "text-gray-500" : "text-red-100"}`}>
+                          <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] ${isMe ? "text-black/60" : "text-black/60"}`}>
                             <span>{msg.time || "Just now"}</span>
                             {isMe && (msg.read ? <CheckCheck className="w-3 h-3" /> : <Check className="w-3 h-3" />)}
                           </div>
@@ -358,4 +373,4 @@ const Messages = () => {
   );
 };
 
-export default Messages;
+export default TMessages;

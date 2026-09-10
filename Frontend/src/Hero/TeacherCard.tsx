@@ -1,4 +1,4 @@
-import { Star, MapPin, Clock, Bookmark } from "lucide-react";
+import { Star, MapPin, Clock, Bookmark, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { Link } from "react-router-dom";
@@ -97,8 +97,8 @@ const saveTeacher = async (teacherId: string) => {
       <div className="flex gap-4 mb-4">
         <div className="relative">
           <img
-            
-            alt= "could not load"
+            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(teacher.name)}&background=random`}
+            alt={teacher.name}
             className="w-20 h-20 rounded-xl object-cover shadow-md"
           />
           {teacher.verified && (

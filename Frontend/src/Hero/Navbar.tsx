@@ -11,7 +11,7 @@ const Navbar = () => {
  
  
   const navLinks = [
-    { to: `/teachers`, label: "Teachers", icon: Search },
+    { to: `/access`, label: "Teachers", icon: Search },
     { to: "/working", label: "How It Works", icon: Users },
     { to: "/about", label: "About", icon: MessageSquare },
   ];
@@ -51,7 +51,7 @@ const Navbar = () => {
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
            <Link to="/user-login"> <Button variant="default" size="sm" className="cursor-pointer bg-red-500 text-white text-xl">
-              LogIn
+              Log in
             </Button></Link>
           </div>
 

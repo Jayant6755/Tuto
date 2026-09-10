@@ -6,13 +6,14 @@ import { Label } from "@/components/ui/label";
 import { GraduationCap, Mail, Lock, User, ArrowLeft, Eye, EyeOff, Github, Flag } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircleIcon, CheckCircle2Icon} from "lucide-react"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 
 
 
 // import { useToast } from "@/hooks/use-toast";
 
-const TeacherAuth = () => {
+const TeacherLogin = () => {
 
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
@@ -20,6 +21,7 @@ const TeacherAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("Student");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirm] = useState("");
   const [name, setName] = useState("");
@@ -41,13 +43,13 @@ const TeacherAuth = () => {
     
 
      // Basic validation
-     if (isLogin && !email || !password ){
+     if (isLogin && !email || !password || !role){
       setError("All fields are required")
       setIsLoading(false)
       return
      }
 
-     if(!isLogin && (!email || !password || !name || !confirmPassword)){
+     if(!isLogin && (!email || !password || !name || !confirmPassword || !role)){
       setError("All fields are required")
       setIsLoading(false)
       return
@@ -65,36 +67,41 @@ const TeacherAuth = () => {
      try {
 
       if(isLogin){
-        const response = await fetch("http://localhost:5000/api/teachers/login", {
+        const response = await fetch("http://localhost:5000/api/user/user-login", {
           method:'POST',
           headers:{
             'Content-Type':'application/json',
           },
-          body: JSON.stringify({name, email, password})
+          body: JSON.stringify({email, password, role})  
         });
-
+        
         const LoginData = await response.json();
         
         if(!response.ok){
           throw new Error(LoginData.message)
         }
+        localStorage.setItem("token", LoginData.token);
         setIsLoading(false);
         setSuccess(LoginData.message)
-        
         setError("");
         
         setTimeout(() => {
-          navigate(`/teacher-dashboard/${LoginData.teacherId}`)
+          if(role === "Teacher"){
+            navigate(`/teacher-dashboard/${LoginData.id}`);
+          }
+          else{
+            navigate(`/student-dashboards/${LoginData.id}`);
+          }
         }, 2000);
       }
         else {
       
-      const res = await fetch(`http://localhost:5000/api/teachers/sign`,{
+      const res = await fetch(`http://localhost:5000/api/user/create`,{
         method: 'POST',
         headers: {
           'Content-Type':'application/json',
         },
-        body: JSON.stringify({name, email, password})
+        body: JSON.stringify({name, email, password, role})
       });
       
       const data = await res.json();
@@ -111,7 +118,7 @@ const TeacherAuth = () => {
         setIsLoading(false)
         setError(error.message)
         setSuccess("")
-
+        console.error("Error:", error);
         setTimeout(() => {
           setError("")
         }, 2000);
@@ -120,13 +127,13 @@ const TeacherAuth = () => {
 
  
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left Side - Form */}
-      <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-12  ">
+      <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-12  lg:md:w-1/2 absolute ">
         <div className="mx-auto w-full max-w-md">
           {/* Back Button */}
           <Link
-            to="/"
+            to="/tuto-admin"
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -140,14 +147,11 @@ const TeacherAuth = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-foreground">Tuto</h1>
-              <p className="text-sm text-muted-foreground">Teacher Portal</p>
+            
             </div>
           </div>
 
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-foreground mb-2">Teacher Login</h2>
-          </div>
-
+       
           {/* Toggle Buttons */}
           <div className="flex gap-2 p-1 bg-gray-100 rounded-lg mb-8">
             <button
@@ -174,8 +178,93 @@ const TeacherAuth = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
+         
+          {isLogin && (
+            <div className="space-y-2">
+             <div className="space-y-2 ">
+              <Label htmlFor="email"> 
+                Email Address
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e)=> setEmail(e.target.value)}
+                  className="pl-11 h-12"
+                />
+              </div>
+            </div>
+
+             <div className="space-y-2 ">
+              <Label htmlFor="email"> 
+                Role
+              </Label>
+              <div className="relative">
+               <RadioGroup defaultValue="comfortable" className="w-fit border border-border rounded-md p-4 w-full"
+               value={role}
+               onValueChange={setRole}
+               >
+      <div className="flex items-center gap-3">
+        <RadioGroupItem 
+          value="Teacher"
+          id="Teacher" 
+         />
+        <Label htmlFor="Teacher">Teacher</Label>
+      </div>
+      <div className="flex items-center gap-3">
+        <RadioGroupItem value="Student" id="Student"/>
+        <Label htmlFor="Student" >Student</Label>
+      </div>
+    </RadioGroup>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">
+                Password
+              </Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/3 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e)=> setPassword(e.target.value)}
+                  className="pl-11 pr-11 h-12 "
+                  
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/3 -translate-y-1/3 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+                 <button
+                  type="button"
+                  className="text-sm text-red-500 font-semibold hover:underline cursor-pointer hover:text-primary/80 transition-colors"
+                >
+                  Forgot password?
+                </button>
+              </div>
+            </div>
+            </div>
+          )}
+           
+
             {!isLogin && (
-              <div className="space-y-2">
+              <div className="space-y-5 ">
+               <div className="space-y-2">
                 <Label htmlFor="name" className="text-foreground">
                   Full Name
                 </Label>
@@ -192,9 +281,8 @@ const TeacherAuth = () => {
                   />
                 </div>
               </div>
-            )}
 
-            <div className="space-y-2 ">
+               <div className="space-y-2 ">
               <Label htmlFor="email"> 
                 Email Address
               </Label>
@@ -209,6 +297,24 @@ const TeacherAuth = () => {
                   onChange={(e)=> setEmail(e.target.value)}
                   className="pl-11 h-12"
                 />
+              </div>
+            </div>
+
+             <div className="space-y-2 ">
+              <Label htmlFor="email"> 
+                Role
+              </Label>
+              <div className="relative">
+               <RadioGroup defaultValue="comfortable" className="w-fit border border-border rounded-md p-4 w-full">
+      <div className="flex items-center gap-3">
+        <RadioGroupItem value="Teacher" id="Teacher" />
+        <Label htmlFor="Teacher">Teacher</Label>
+      </div>
+      <div className="flex items-center gap-3">
+        <RadioGroupItem value="Student" id="Student" />
+        <Label htmlFor="Student">Student</Label>
+      </div>
+    </RadioGroup>
               </div>
             </div>
 
@@ -242,7 +348,6 @@ const TeacherAuth = () => {
               </div>
             </div>
 
-            {!isLogin && (
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword" className="text-foreground">
                   Confirm Password
@@ -260,18 +365,9 @@ const TeacherAuth = () => {
                   />
                 </div>
               </div>
-            )}
-
-            {isLogin && (
-              <div className="flex items-center justify-end">
-                <button
-                  type="button"
-                  className="text-sm text-red-500 font-semibold hover:underline cursor-pointer hover:text-primary/80 transition-colors"
-                >
-                  Forgot password?
-                </button>
               </div>
             )}
+
 
             <Button
               type="submit"
@@ -320,7 +416,7 @@ const TeacherAuth = () => {
           
 
           {/* Divider */}
-          <div className="relative my-8">
+          {/* <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-border" />
             </div>
@@ -329,9 +425,9 @@ const TeacherAuth = () => {
                 or continue with
               </span>
             </div>
-          </div>
+          </div> */}
 
-          {/* Social Login */}
+          {/* Social Login
           <div className="grid grid-cols-2 gap-3">
             <Button variant="outline" className="h-12 hover:bg-black hover:text-white cursor-pointer" >
               Google
@@ -340,7 +436,7 @@ const TeacherAuth = () => {
               <Github/>
               GitHub
             </Button>
-          </div>
+          </div> */}
 
           {/* Terms */}
           {!isLogin && (
@@ -352,67 +448,20 @@ const TeacherAuth = () => {
             </p>
           )}
 
-          {/* Teacher Link */}
-          <p className="mt-8 text-center text-sm text-muted-foreground">
-            Are you a Student?{" "}
-            <Link
-              to="/student-login"
-              className="text-red-500 hover:underline font-medium"
-            >
-              Register as a Student
-            </Link>
-          </p>
         </div>
       </div>
 
       {/* Right Side - Visual */}
-      <div className="hidden lg:flex flex-1 bg-red-600 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--accent)/0.3),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(var(--primary)/0.2),transparent_50%)]" />
-        
-        <div className="relative z-10 flex flex-col justify-center px-12 text-white">
-          <h2 className="text-4xl font-bold mb-6 leading-tight ">
-            Empower Students<br />Share Knowledge
-          </h2>
-          <p className="text-lg text-primary-foreground/80 max-w-md mb-8">
-            Connect with eager learners, manage your schedule and grow your teaching carrer with Tuto
-          </p>
-          
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <span className="text-primary-foreground/90">Reach thousands of Students</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <span className="text-primary-foreground/90">Set your own rates and Schedule</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <svg className="w-5 h-5 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <span className="text-primary-foreground/90">Built your teaching reputation</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Decorative Elements */}
-        <div className="absolute bottom-10 right-10 w-64 h-64 rounded-full border border-white/50" />
-        <div className="absolute bottom-20 right-20 w-48 h-48 rounded-full border border-white/50" />
+      <div className="hidden lg:flex flex-1 absolute ml-170 min-h-screen overflow-hidden lg:w-1/2">
+        <img
+          src="Pictures/olenchic-teacher-9799237.png"
+          alt="Login Visual"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       </div>
     </div>
   );
-};
+}
+       
 
-
-export default TeacherAuth
+export default TeacherLogin;

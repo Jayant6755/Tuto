@@ -100,7 +100,7 @@ const isActive = add
           </CardTitle>
         <CardAction>
           {!isActive && (
-             <Button className='border-2 mt-5 ' onClick={handleAdd} >ADD</Button>
+             <Button className='border mt-5 ' onClick={handleAdd} >ADD</Button>
           )}
         </CardAction>
       </CardHeader>

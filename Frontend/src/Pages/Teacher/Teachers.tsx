@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../Hero/Navbar";
+import Navbar from "../Home/Navbar/Navbar";
 import Footer from "../../Hero/Footer";
 import TeacherCard from "../../Hero/TeacherCard";
 import {jwtDecode} from "jwt-decode";
@@ -16,7 +16,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Link, Search, SlidersHorizontal, X } from "lucide-react";
 import axios from "axios";
-import { LucideMessagesSquare } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
 
 const subjects = ["All Subjects", "Mathematics", "Physics", "Chemistry", "English Literature", "Programming", "Spanish", "Music", "History"];
@@ -105,7 +105,7 @@ const Teachers = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      <main className="pt-24 pb-20">
+      <main className="pt-5 pb-20">
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="mb-8 ">

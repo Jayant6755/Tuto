@@ -10,5 +10,7 @@ const router = express_1.default.Router();
 router.get("/incoming-requests", authmiddleware_1.verifyToken, Message_1.getIncomingRequests);
 router.post("/respond", authmiddleware_1.verifyToken, Message_1.respondToConnectionRequest);
 router.post("/request/:teacherId", authmiddleware_1.verifyToken, Message_1.sendConnectionRequest);
+router.get("/messages/:userId", authmiddleware_1.verifyToken, Message_1.getConversationMessages);
+router.delete("/messages/:messageId", authmiddleware_1.verifyToken, Message_1.deleteMessage);
 router.get("/active-connections", authmiddleware_1.verifyToken, Message_1.getActiveConnections);
 exports.default = router;

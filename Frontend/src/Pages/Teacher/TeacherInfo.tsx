@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { AlertCircleIcon, CheckCircle2Icon} from "lucide-react"
+import { AlertCircleIcon, CheckCircle2Icon, LucidePlus} from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -32,17 +32,30 @@ interface JwtPayloadWithId {
   [key: string]: any;
 }
 
+interface Education  {
+  degree: string;
+  institution: string;
+  year: string;
+};
+
 const TeacherRegister = () => {
   const navigate = useNavigate();
 
   const [show, setShow] = useState(null);
   const [subjects, setSubjects] = useState<string[]>([]);
   const [ClassLevels, setClassLevels] = useState<string[]>([]);
+  const [Education, setEducation] = useState<Education[]>([]);
+  const [EducationSuccess, setEducationSuccess] = useState(false);
+  const [addEducation, setAddEducation] = useState(false);
   
   const [FName, setFname] = useState<string>("");
   const [LName, setLname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [location, setLocation] = useState<string>("");
+  const [degree, setDegree] = useState<string>("");
+  const [institution, setInstitution] = useState<string>("");
+  const [year, setYear] = useState<string>("");
+  const [Title, setTitle] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [experience, setExperience] = useState<string>("");
   const [hourlyRate, setHourlyRate] = useState<string>("");
@@ -86,6 +99,8 @@ const TeacherRegister = () => {
       alert("Please enter your Location");
       return;
      }
+
+    
      
      const savedToken = localStorage.getItem("token");
      if (!savedToken) {
@@ -107,18 +122,22 @@ const TeacherRegister = () => {
       email,
       location,
       bio,
+      Title,
       experience: Number(experience.split("-")[0]), // Extracting minimum years from the range
       hourlyRate: Number(hourlyRate),
+      Education,
       subjects,
       ClassLevels,
      }
       
+     console.log("Submitting teacher info:", teacher); // Debugging line
       const res = await fetch('http://localhost:5000/api/teachers/info', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${savedToken}`,
         },
+        
         body: JSON.stringify(teacher),
       });
       
@@ -202,6 +221,7 @@ const TeacherRegister = () => {
         hourlyRate: Number(hourlyRate),
         subjects,
         ClassLevels,
+        Education
       }
       const res = await axios.put(`http://localhost:5000/api/teachers/updateInfo/${id}`, teacher, {
         headers: {
@@ -226,7 +246,30 @@ const TeacherRegister = () => {
 
   
  
-  
+  const handleAddEducation = () => {
+    setAddEducation(true);
+
+    if(!degree.trim()) return;
+
+    setEducation([
+      ...Education,
+      {
+        degree,
+        institution,
+        year
+      },
+
+    ]);
+    setEducationSuccess(true)
+    setTimeout(()=>{
+      setEducationSuccess(false);
+    }, 2000)
+    setDegree("");
+    setInstitution("")
+    setYear("");
+  }
+
+console.log(Education)
 
   return (
     <div className="min-h-screen bg-background">
@@ -321,6 +364,60 @@ const TeacherRegister = () => {
                   </div>
                 </div>
 
+                {/* Education Section */}
+                 <p className="font-semibold">Education</p>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-gray-300 p-4 rounded-lg bg-gray-50">
+                  <div className="space-y-2">
+                    <Label htmlFor="degree">Degree / Certificate *</Label>
+                    <Input
+                      id="degree"
+                      name="degree"
+                      type="text"
+                      value={degree}
+                      onChange={(e)=> setDegree(e.target.value)}
+                      placeholder="e.g Phd in Applied Mathematics"
+                      
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="institution">Institution</Label>
+                    <Input
+                      id="institution"
+                      name="institution"
+                      type="tel"
+                      value={institution}
+                      onChange={(e)=> setInstitution(e.target.value)}
+                      placeholder="e.g NIT Kanpur"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="year">Year</Label>
+                    <Input
+                      id="year"
+                      name="year"
+                      type="tel"
+                      value={year}
+                      onChange={(e)=> setYear(e.target.value)}
+                      placeholder="e.g 2020"
+                    />
+                  </div>
+
+                  <button type="button" className="bg-red-100 border-gray-300 border rounded-lg " onClick={handleAddEducation}>
+                    <div className="flex items-center gap-2 justify-center p-2">
+                     
+                      <span className="text-medium">Submit</span>
+                    </div>
+                  </button>
+                 
+                  {EducationSuccess && (
+                    <div className="flex rounded-lg p-4 justify-center w-full h-full bg-green-200 text-green-500">
+                        <p className="">Added Successfully</p>
+                    </div>
+                  )}
+                  </div>
+
+
                 <div className="space-y-2">
                   <Label htmlFor="bio">Bio *</Label>
                   <Textarea
@@ -352,6 +449,19 @@ const TeacherRegister = () => {
               <CardContent className="space-y-6">
                 {/* Subjects */}
                 <div className="space-y-3">
+
+                     <div className="space-y-2">
+                    <Label htmlFor="Title">Title</Label>
+                    <Input
+                      id="Title"
+                      name="Title"
+                      type="text"
+                      value={Title}
+                      onChange={(e)=> setTitle(e.target.value)}
+                      placeholder="e.g. Mathematics Teacher"
+                    />
+                  </div>
+
                   <Label className="flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-red-500" />
                     Subjects You Teach *

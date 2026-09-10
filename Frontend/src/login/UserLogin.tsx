@@ -90,7 +90,7 @@ const UserLogin = () => {
             navigate(`/teacher-dashboard/${LoginData.id}`);
           }
           else{
-            navigate("/student-dashboards");
+            navigate(`/student-home/${LoginData.id}`);
           }
         }, 2000);
       }
@@ -127,9 +127,9 @@ const UserLogin = () => {
 
  
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left Side - Form */}
-      <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-12  ">
+      <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-12  lg:md:w-1/2 absolute ">
         <div className="mx-auto w-full max-w-md">
           {/* Back Button */}
           <Link
@@ -199,7 +199,7 @@ const UserLogin = () => {
               </div>
             </div>
 
-             <div className="space-y-2 ">
+             {/* <div className="space-y-2 ">
               <Label htmlFor="email"> 
                 Role
               </Label>
@@ -221,7 +221,7 @@ const UserLogin = () => {
       </div>
     </RadioGroup>
               </div>
-            </div>
+            </div> */}
 
             <div className="space-y-2">
               <Label htmlFor="password">
@@ -300,7 +300,7 @@ const UserLogin = () => {
               </div>
             </div>
 
-             <div className="space-y-2 ">
+             {/* <div className="space-y-2 ">
               <Label htmlFor="email"> 
                 Role
               </Label>
@@ -316,7 +316,7 @@ const UserLogin = () => {
       </div>
     </RadioGroup>
               </div>
-            </div>
+            </div> */}
 
             <div className="space-y-2">
               <Label htmlFor="password">
@@ -416,7 +416,7 @@ const UserLogin = () => {
           
 
           {/* Divider */}
-          <div className="relative my-8">
+          {/* <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-border" />
             </div>
@@ -425,9 +425,9 @@ const UserLogin = () => {
                 or continue with
               </span>
             </div>
-          </div>
+          </div> */}
 
-          {/* Social Login */}
+          {/* Social Login
           <div className="grid grid-cols-2 gap-3">
             <Button variant="outline" className="h-12 hover:bg-black hover:text-white cursor-pointer" >
               Google
@@ -436,7 +436,7 @@ const UserLogin = () => {
               <Github/>
               GitHub
             </Button>
-          </div>
+          </div> */}
 
           {/* Terms */}
           {!isLogin && (
@@ -448,67 +448,20 @@ const UserLogin = () => {
             </p>
           )}
 
-          {/* Teacher Link */}
-          <p className="mt-8 text-center text-sm text-muted-foreground">
-            Are you a Student?{" "}
-            <Link
-              to="/student-login"
-              className="text-red-500 hover:underline font-medium"
-            >
-              Register as a Student
-            </Link>
-          </p>
         </div>
       </div>
 
       {/* Right Side - Visual */}
-      <div className="hidden lg:flex flex-1 bg-red-600 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--accent)/0.3),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(var(--primary)/0.2),transparent_50%)]" />
-        
-        <div className="relative z-10 flex flex-col justify-center px-12 text-white">
-          <h2 className="text-4xl font-bold mb-6 leading-tight ">
-            Empower Students<br />Share Knowledge
-          </h2>
-          <p className="text-lg text-primary-foreground/80 max-w-md mb-8">
-            Connect with eager learners, manage your schedule and grow your teaching carrer with Tuto
-          </p>
-          
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <span className="text-primary-foreground/90">Reach thousands of Students</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <span className="text-primary-foreground/90">Set your own rates and Schedule</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                <svg className="w-5 h-5 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <span className="text-primary-foreground/90">Built your teaching reputation</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Decorative Elements */}
-        <div className="absolute bottom-10 right-10 w-64 h-64 rounded-full border border-white/50" />
-        <div className="absolute bottom-20 right-20 w-48 h-48 rounded-full border border-white/50" />
+      <div className="hidden lg:flex flex-1 absolute ml-170 min-h-screen overflow-hidden lg:w-1/2">
+        <img
+          src="Pictures/olenchic-teacher-9799237.png"
+          alt="Login Visual"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       </div>
     </div>
   );
-};
-
+}
+       
 
 export default UserLogin;

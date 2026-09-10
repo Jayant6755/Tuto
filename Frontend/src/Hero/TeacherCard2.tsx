@@ -1,7 +1,6 @@
 import { Star, MapPin, Clock} from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-
+import { Link } from "react-router-dom";
 
 
 
@@ -113,10 +112,13 @@ const avatarUrl =
         </div>
         <div className="flex gap-2">
           
-          
+         <Link to="/access">
             <Button variant="default" size="sm" className="bg-red-600 text-white">
-             Login to View Profile
+              View Profile
             </Button>
+            </Link>
+          
+            
           
         </div>
       </div>

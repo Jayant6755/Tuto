@@ -28,8 +28,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Field, FieldGroup } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+
 
 import { useEffect, useState } from "react";
 import TeacherEducation from "./TeacherEducation";
@@ -102,6 +101,12 @@ interface TeacherDataType {
      FName: string,
      LName: string,
      location: string,
+     Title: string,
+      Education: {
+        degree: string;
+        institution: string;
+        year: string;
+      }[],
      experience: number,
      subjects: string[],
      bio: string,
@@ -167,16 +172,16 @@ useEffect(() => {
 if(isLoding) return <div>Loading..</div>
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
       
       <main className="pt-24 pb-20 ">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-3 gap-8">
+        <div className="container mx-auto px-4 ">
+          <div className="grid lg:grid-cols-3 gap-8 ">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8 ">
               {/* Header Card */}
-              <Card className="overflow-hidden ">
+              <Card className="overflow-hidden border-none ">
                 <div className="h-42 -mt-6 bg-red-500" />
                 <CardContent className="pt-0 relative">
                   <div className="flex flex-col md:flex-row gap-6 -mt-16 ">
@@ -185,13 +190,9 @@ if(isLoding) return <div>Loading..</div>
                       <img
                         src={teacherData.avatar}
                         alt={teacherData.name}
-                        className="w-32 h-32 rounded-2xl object-cover border-4 border-card shadow-xl"
+                        className="w-32 h-32 rounded-2xl object-cover border-4 border-white shadow-xl"
                       />
-                      {teacherData.verified && (
-                        <div className="absolute top-25 -right-2 w-8 h-8 bg-green-400 border-white border-1 rounded-full flex items-center justify-center shadow-md">
-                          <CheckCircle className="w-5 h-5 text-white" />
-                        </div>
-                      )}
+                     
                     </div>
 
                     {/* Info */}
@@ -201,44 +202,35 @@ if(isLoding) return <div>Loading..</div>
                           <h1 className="text-2xl md:text-3xl font-bold text-card-foreground">
                             {store?.FName} {store?.LName}
                           </h1>
-                          <p className="text-primary font-medium text-lg mt-1">
-                            {teacherData.subject} Expert
+                          <p className="text-red-500 font-medium text-lg mt-1">
+                            {store?.Title}
                           </p>
-                          <p className="text-muted-foreground mt-1">
-                            {teacherData.tagline}
-                          </p>
+                        
                         </div>
-                        <div className="flex gap-2">
-                          <Button variant="outline" size="icon">
-                            <Heart className="w-4 h-4" />
-                          </Button>
-                          <Button variant="outline" size="icon">
-                            <Share2 className="w-4 h-4" />
-                          </Button>
-                        </div>
+                       
                       </div>
 
                       {/* Stats Row */}
                       <div className="flex flex-wrap gap-6 mt-4 text-sm">
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1.5 bg-white border-1 border-gray-300 rounded-lg p-2">
                           <Star className="w-5 h-5 text-warning fill-warning" />
                           <span className="font-semibold text-card-foreground">{teacherData.rating}</span>
                           <span className="text-muted-foreground">({teacherData.reviewCount} reviews)</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <div className="flex items-center gap-1.5 text-gray-500">
                           <MapPin className="w-4 h-4" />
-                          {teacherData.location}
+                          {store?.location}
                         </div>
-                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                        <div className="flex items-center gap-1.5 text-gray-500">
                           <Clock className="w-4 h-4" />
                           {store?.experience} years experience
                         </div>
                       </div>
 
                       {/* Specializations */}
-                      <div className="flex flex-wrap gap-2 mt-4">
+                      <div className="flex flex-wrap gap-2 mt-4 ">
                         {store?.subjects.map((spec) => (
-                          <Badge key={spec} variant="secondary">
+                          <Badge key={spec} variant="secondary" className="bg-gray-200">
                             {spec}
                           </Badge>
                         ))}
@@ -249,10 +241,10 @@ if(isLoding) return <div>Loading..</div>
               </Card>
 
               {/* About */}
-              <Card>
+              <Card className="border-1 border-gray-300">
                 <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold text-card-foreground mb-4">About</h2>
-                  <div className="text-muted-foreground whitespace-pre-line leading-relaxed">
+                  <h2 className="text-xl font-semibold text-red-500 mb-4">ABOUT</h2>
+                  <div className="text-gray-500 whitespace-pre-line leading-relaxed">
                     {store?.bio}
                   </div>
                 </CardContent>
@@ -260,17 +252,42 @@ if(isLoding) return <div>Loading..</div>
 
               {/* Education & Certifications */}
               <div className="grid md:grid-cols-2 gap-6">
-                <TeacherEducation/>
-                <Card>
+               
+                <Card className="border-1 border-gray-300">
                   <CardContent className="p-6">
-                    <div className="flex items-center gap-2 mb-4">
+                    <div className="flex items-center gap-2 mb-4 text-red-500">
                       <GraduationCap className="w-5 h-5 text-primary" />
-                      <h2 className="text-xl font-semibold text-card-foreground">Class Level</h2>
+                      <h2 className="text-xl font-semibold text-card-foreground">Education</h2>
+                    </div>
+                    <div className="space-y-3">
+                      {store?.Education.map((edu, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <div className="w-full border-l-2 border-red-300 flex flex-col" >
+                            <div className="ml-4">
+                              <p className="font-medium text-card-foreground">{edu.degree}</p>
+                            <p className="text-gray-700 text-sm">{edu.institution}</p>
+                            <p className="text-gray-500 text-sm">{edu.year}</p>
+
+                            </div>
+                          </div>
+
+                          
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-1 border-gray-300">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-2 mb-4 text-red-500">
+                      <GraduationCap className="w-5 h-5 text-primary" />
+                      <h2 className="text-xl font-semibold text-card-foreground">Class Levels</h2>
                     </div>
                     <div className="space-y-3">
                       {store?.ClassLevels.map((cert, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-success" />
+                        <div key={index} className="flex items-center gap-2 bg-gray-100 p-1 rounded-lg">
+                          <CheckCircle className="w-4 h-4 text-green-500" />
                           <span className="text-card-foreground">{cert}</span>
                         </div>
                       ))}
@@ -280,12 +297,12 @@ if(isLoding) return <div>Loading..</div>
               </div>
 
               {/* Reviews */}
-              <Card>
+              <Card className="border-1 border-gray-300">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
-                      <Star className="w-5 h-5 text-warning fill-warning" />
-                      <h2 className="text-xl font-semibold text-card-foreground">
+                     
+                      <h2 className="text-xl font-semibold text-red-500">
                         Reviews
                       </h2>
                     </div>
@@ -345,7 +362,7 @@ if(isLoding) return <div>Loading..</div>
                     ))
                     ):(
                       <div className="p-4 text-center">
-                           <p className="text-xs text-muted-foreground">No recent reviews yet.</p>
+                           <p className="text-lg text-gray-400">No recent reviews yet.</p>
                         </div>
                     )}
                     

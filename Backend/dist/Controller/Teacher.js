@@ -5,7 +5,7 @@ const TeacherInfo_1 = require("../Models/TeacherInfo");
 //Details (Isko save hi kyu kar raha hai ???)
 const TeacherInformation = async (req, res) => {
     try {
-        const { id, FName, LName, email, location, bio, subjects, ClassLevels, experience, hourlyRate } = req.body;
+        const { id, FName, LName, email, location, Title, Education, bio, subjects, ClassLevels, experience, hourlyRate } = req.body;
         const check = await TeacherInfo_1.Teacher.findOne({ email });
         if (check) {
             return res.status(409).json({ message: "Same User exists" });
@@ -16,6 +16,8 @@ const TeacherInformation = async (req, res) => {
             LName,
             email,
             location,
+            Title,
+            Education,
             bio,
             subjects,
             ClassLevels,

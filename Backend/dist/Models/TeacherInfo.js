@@ -45,6 +45,21 @@ exports.TeacherSchema = new mongoose_1.Schema({
     LName: { type: String },
     email: { type: String, unique: true },
     location: { type: String },
+    Education: [
+        {
+            degree: {
+                type: String,
+                required: true
+            },
+            institution: {
+                type: String
+            },
+            year: {
+                type: String
+            }
+        }
+    ],
+    Title: { type: String },
     bio: { type: String },
     subjects: { type: [String] },
     ClassLevels: { type: [String] },

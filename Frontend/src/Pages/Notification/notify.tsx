@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Bell } from 'lucide-react';
 
 interface IncomingRequest {
     _id: string;
@@ -66,10 +67,21 @@ export const Notify = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Incoming Student Connections</h2>
+      <h2 className="text-2xl font-bold mb-4">Student Connection Requests</h2>
+      <h4 className="text-sm text-gray-500 mb-6">Connection, session & application requests</h4>
       
       {incomingRequest.length === 0 ? (
-        <p className="text-gray-500">No pending requests at the moment.</p>
+        <div className="border-2 text-center border-dashed border-gray-300 p-6 rounded-xl">
+          <div className="flex justify-center flex-col items-center gap-2">
+             <span className="text-gray-700 bg-gray-200 p-2 rounded-xl"><Bell className="w-8 h-8" /></span>
+             <p className="text-gray-500">No connection requests at the moment.</p>
+             <Link to={`/teacher-dashboard/${id}`}>
+             <button className="mt-2 bg-gray-200 cursor-pointer text-black py-2 px-4 rounded-xl">
+               Go to dashboard
+             </button>
+             </Link>
+          </div>
+        </div>
       ) : (
         <div className="space-y-4">
           {incomingRequest.map((request) => (

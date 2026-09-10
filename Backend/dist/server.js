@@ -14,6 +14,7 @@ const http_1 = __importDefault(require("http"));
 const socket_io_1 = require("socket.io");
 const socket_1 = __importDefault(require("./socket/socket"));
 const connection_1 = __importDefault(require("./Routes/connection"));
+const admin_1 = __importDefault(require("./Routes/admin"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const uri = process.env.MONGO_URI || "";
@@ -48,6 +49,8 @@ app.use("/api/studentSignup", student_1.default);
 app.use("/api/user", user_1.default);
 // Routes for connection requests
 app.use("/api/connection", connection_1.default);
+//admin
+app.use("/api/admin", admin_1.default);
 // Start Server
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

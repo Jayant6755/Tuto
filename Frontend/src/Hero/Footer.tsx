@@ -6,27 +6,18 @@ import { Input } from "@/components/ui/input";
 const Footer = () => {
   const footerLinks = {
     Platform: [
-      { name: "Find Teachers", href: "/teachers" },
-      { name: "Become a Teacher", href: "/become-teacher" },
-      { name: "How It Works", href: "/how-it-works" },
-      { name: "Pricing", href: "/pricing" },
+      { name: "Find Teachers", href: "/access" },
+      { name: "Become a Teacher", href: "/user-login" },
+      { name: "How It Works", href: "/working" },
     ],
-    Subjects: [
-      { name: "Mathematics", href: "/teachers?subject=math" },
-      { name: "Science", href: "/teachers?subject=science" },
-      { name: "Languages", href: "/teachers?subject=languages" },
-      { name: "Programming", href: "/teachers?subject=programming" },
-    ],
+   
     Company: [
       { name: "About Us", href: "/about" },
       { name: "Careers", href: "/careers" },
-      { name: "Blog", href: "/blog" },
       { name: "Contact", href: "/contact" },
     ],
     Support: [
       { name: "Help Center", href: "/help" },
-      { name: "Privacy Policy", href: "/privacy" },
-      { name: "Terms of Service", href: "/terms" },
       { name: "FAQ", href: "/faq" },
     ],
   };

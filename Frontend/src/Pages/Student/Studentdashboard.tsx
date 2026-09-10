@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LucideMessagesSquare } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import PrivateNavbar from "@/Pages/Navbar/Navbar";
+import PrivateNavbar from "@/Pages/Home/Navbar/Navbar";
 import {
   Search,
   Bell,
@@ -30,7 +30,7 @@ import {
   Bookmark,
   Zap,
 } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 /* ── mock data ── */
@@ -177,7 +177,12 @@ const StudentDashboardss = () => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [savedTeachers, setSavedTeachers] = useState<SavedTeacher[]>([]);
+  const navigate = useNavigate();
 
+  const token = localStorage.getItem("token")
+  if(!token){
+    navigate("/user-login");
+  }
   
   useEffect(() => {
     const fetchid = async () => {
@@ -241,6 +246,12 @@ const StudentDashboardss = () => {
     fetchSavedTeachers();
   }, []);
 
+  const logut = ()=>{
+    localStorage.removeItem("token");
+    navigate("/")
+    
+  }
+
   
   return (
     <div className="min-h-screen bg-gray-100">
@@ -262,34 +273,10 @@ const StudentDashboardss = () => {
                 <p className="text-muted-foreground text-sm">{studentProfile.headline}</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Button className="border-1 border-gray-300" size="sm" asChild>
-                <Link to={`/student-profile/${id}`}>
-                  <Eye className="w-4 h-4 mr-2" />
-                  My Profile
-                </Link>
-              </Button>
-              <Button className="border-1 border-gray-300" size="sm">
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
-              </Button>
-              
-              <Link to={`/smessages/${id}`} className="relative bg-red-100 text-red-500 rounded-full p-2 hover:bg-red-200 transition-colors">
-                 <LucideMessagesSquare className="w-6 h-6 text-red-500" />
-              </Link>
-            </div>
+           
           </div>
 
-          {/* ── Search Bar (LinkedIn‑style) ── */}
-          <div className="relative mb-8 bg-white  rounded-xl">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground " />
-            <Input
-              placeholder="Search teachers by name, subject, or skill…"
-              className="pl-12 h-12 rounded-xl text-base border-border border-gray-300 bg-card shadow-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+         
 
           {/* ── Stats ── */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 ">
@@ -413,7 +400,7 @@ const StudentDashboardss = () => {
                   {recommendedTeachers.map((teacher) => (
                     <div
                       key={teacher.id}
-                      className="flex items-center gap-4 p-4 rounded-xl border border-border/50 hover:border-red-300 hover:shadow-sm transition-all"
+                      className="flex items-center gap-4 p-4 rounded-xl border border-gray-300 hover:border-red-300 hover:shadow-sm transition-all"
                     >
                       <Avatar className="w-14 h-14 shrink-0">
                         <AvatarImage src={teacher.avatar} alt={teacher.name} />
@@ -506,11 +493,11 @@ const StudentDashboardss = () => {
                       <Link
                         key={t.teacherId}
                         to={`/teacher/${t.teacherId}`}
-                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-100 transition-colors"
+                        className="flex items-center gap-3 p-2.5 rounded-xl border-1 border-gray-300 hover:bg-gray-100 transition-colors"
                       >
                         <Avatar className="w-9 h-9">
                           <AvatarImage  alt={t.FName} />
-                          <AvatarFallback>{t.FName[0]}</AvatarFallback>
+                          <AvatarFallback className="bg-red-500 text-white">{t.FName[0]}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-foreground truncate">{t.FName} {t.LName}</p>
